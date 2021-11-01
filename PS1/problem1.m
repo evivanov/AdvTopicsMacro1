@@ -1,6 +1,6 @@
 clear all
 
-%parameters
+% Parameters
 alpha = 0.3;
 beta = 0.96;
 delta = 1;
@@ -13,6 +13,7 @@ kmin_grid = 0;
 kmax_grid = 1;
 k_grid = linspace(kmin_grid, kmax_grid, M)';
 
+%% Value function iteration: baseline
 v0 = ones(M,1);
 v1 = zeros(M,1);
 k11 = zeros(M,1);
@@ -66,6 +67,7 @@ ylabel('next period');
 % saveas(gcf,'1_Policy_Function_without','epsc')
 
 
+%% Value function iteration: exploiting monotonicity
 v0 = ones(M,1);
 v1 = zeros(M,1);
 k11 = zeros(M,1);
@@ -104,7 +106,7 @@ end
 
 
 
-
+%% Value function iteration: exploiting concavity
 v0 = ones(M,1);
 v1 = zeros(M,1);
 k11 = zeros(M,1);
@@ -136,6 +138,45 @@ while dif > tol
     dif = max(abs(v1-v0));
     v0 = v1;
 end
+
+
+
+%% Howard's policy function iteration
+v0 = ones(M,1);
+v1 = zeros(M,1);
+k11 = zeros(M,1);
+w = zeros(M,1);
+dw = zeros(M,1);
+dif = 1;
+% (1) Guess for k'_0(k)
+k_pr_0 = (alpha*beta).*k_grid.^alpha;
+
+while dif > tol
+    for i = 1:M
+        ki = k_grid(i);
+        c = ki^alpha + (1-delta)*ki - k_pr_0(i);           
+            if c <= 0
+                w(i) = -Inf;
+                dw(i) = -Inf;
+            else
+                w(i) = log(c) + beta*v1(i);
+                dw(i) = (1+alpha*ki^(alpha-1) - delta) * 1/c;
+            end
+            
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
