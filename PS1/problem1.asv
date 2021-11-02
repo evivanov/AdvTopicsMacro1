@@ -146,20 +146,17 @@ end
 %k_pr_0 = alpha.*k_grid; % some random guess
 %fun = @(k_pr) euler_equation(k_pr, k, alpha, beta, delta);
 %k_pr = fzero(fun,.1);
-dif = 1;
-k_pr_grid = ones(M,M);
-k_0 = alpha.*k_grid;
 
+k_pr_grid = zeros(M,M);
+k_pr_grid(,1) = 
 while dif > tol
     for i = 1:M
-        for j = 1:M-1
+        for j = 1:M
             k = k_grid(i);
             fun = @(k_pr) euler_equation(k_pr, k, alpha, beta, delta);
-            k_pr_grid(i,j+1) = fzero(fun,k_0(i));
-        end
-        dif = norm(k_pr_grid(:,j+1) - k_pr_grid(:,j));
+            k_pr_grid(i) = fzero(fun,k_pr_0(i));
     end
-end
+    
 
 
 
