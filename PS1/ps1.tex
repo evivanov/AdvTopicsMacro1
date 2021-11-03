@@ -89,7 +89,7 @@
 \begin{document}
 \title{\vspace{-1.5cm} Advanced Topics in Macroeconomics 1. Problem Set 1}
 \author{Evgenii Ivanov \and Walter Verwer}
-\date{\today}
+\date{November 5, 2021}
  
 \maketitle
 
@@ -97,7 +97,69 @@
 
 \section*{Problem 2}
 
+Firstly let us derive the expression for the steady state level of capital.
+
+The value function is:
+
+\[
+V(K) = \max_{k'} [ u(zf(k) + (1-\delta)k - k') + \beta V(k')]
+\]
+
+The first order condition:
+
+\[
+-u_c (c) + \beta V(k') = 0
+\]
+where $c = zf(k) + (1-\delta)k - k'$
+
+The envelope condition:
+
+\[
+V'(k) = u_c (c) (zf'(k) + 1-\delta)
+\]
+
+Therefore if we combine them together we get the Euler equation:
+
+\[
+u_c (c) = \beta u_c (c') (zf'(k') + 1-\delta) 
+\]
+
+In the steady state $k'=k=k^*$ and $c$ is also constant:
+
+\[
+1 = \beta (zf'(k^*) + 1 - \delta)
+\]
+\[
+f'(k^*) = z^{-1} \left( \frac{1}{\beta} - 1 + \delta \right)
+\]
+
+If we assume $f(k) = k^\alpha$ then $f'(k) = \alpha k^{\alpha-1}$ and then the steady state capital level is:
+
+\[
+k^* = \left[ \frac{1}{\alpha z} \left( \frac{1}{\beta} - 1 + \delta \right) \right]^{\frac{1}{\alpha-1}}
+\]
+
 \section*{Problem 3}
+
+\section*{Problem 4}
+
+The rate of convergence of the Bisection method is linear and slow but it is guaranteed to converge if function is real and continuous in an interval bounded by given two initial guess.
+Accuracy of bisection method is very good and this method is more reliable than other open methods like Secant, Newton Raphson method etc.
+
+Despite being slower to converge, accuracy of this method increases as number of iterations increases.
+
+In Bisection method, error is reduced by factor of ½ after each iterations, so we can write: en+1/en = 1/2. Which gives:
+
+en+1 = en/2
+
+Or, en+1 = 0.5 en ----- (1)
+
+Here en+1 is error at n+1th iteration and en is error at nth iteration.
+
+From equation (1) it can be concluded that, error at n+1th iteration is linearly related to error at nth iteration i.e. en+1 ∝ en
+
+For this reason, Bisection method is said to have linear rate of convergence.
+
 
 
 \end{document}
