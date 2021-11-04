@@ -9,10 +9,6 @@ M = 100;
 tol = 1e-7;
 dif = 1;
 
-kmin_grid = 0.001;
-kmax_grid = 1;
-k_grid = linspace(kmin_grid, kmax_grid, M)';
-
 z0 = 1;
 z1 = 2*z0;
 
@@ -35,8 +31,6 @@ ki = k(2);
 ki1 = 0;
 
 while abs(ki1 - ki) > 1e-45
-%while abs(lower_bound_guess_k2 - upper_bound_guess_k2) > 1e-10
-%while abs(k(T) - k_star_new) > 1e-6
     ki = k(2);
     k(3:T) = zeros(T-3+1,1);
     c(1) = z1*k(1)^alpha + (1-delta) * k(1) - k(2);
@@ -62,6 +56,56 @@ while abs(ki1 - ki) > 1e-45
     ki1 = (lower_bound_guess_k2+upper_bound_guess_k2)/2;
     k(2) = ki1;
 end
+
+
+
+plot(1:T, k(1:T))
+
+
+
+
+k = zeros(T,1);
+k(T) = k_star_new;
+c = zeros(T,1);
+
+lower_bound_guess_k_t_1 = 0;
+upper_bound_guess_k_t_1 = k(T);
+%z1*k(1)^alpha + (1-delta) * k(1);
+k(T-1) = (lower_bound_guess_k2+upper_bound_guess_k2)/2;
+
+c(T) = z1*k(T)^alpha + (1-delta) * k(T) - k(T);
+
+ki = k(T-1);
+ki1 = 0;
+
+while abs(ki1 - ki) > 1e-45
+    ki = k(T-1);
+    k(1:T-2) = zeros(T-3+1,1);
+    c(T) = z1*k(T)^alpha + (1-delta) * k(T) - k(T);
+    c(T-1) = (1/beta)*c(T)/( z1*alpha*k(T)^(alpha-1) + 1 - delta);
+    for t = T-2:-1:1
+       func = @(x) k(t) - z1*x^alpha - (1-delta)*x + c(t-1);
+       k(t) = z1*k(t-1)^alpha + (1-delta)*k(t-1) - c(t-1);
+       if k(t) < 0
+           lower_bound_guess_k2 = ki;
+           break;
+       end
+       if k(t) > k_star_new
+           upper_bound_guess_k2 = ki;
+           break;
+       end
+       c(t) = (1/beta)*c(t+1)*(z1*alpha*k(t+1)^(alpha-1) + 1 - delta);
+    end
+    if (k(T) < k_star_new && k(T) > 0)
+           lower_bound_guess_k2 = ki;
+    end
+    if (k(T) > k_star_new)
+           upper_bound_guess_k2 = ki;
+    end
+    ki1 = (lower_bound_guess_k2+upper_bound_guess_k2)/2;
+    k(2) = ki1;
+end
+
 
 
 plot(1:T, k(1:T))
