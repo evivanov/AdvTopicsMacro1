@@ -19,6 +19,8 @@ v1 = zeros(M,1);
 k11 = zeros(M,1);
 w = zeros(M,1);
 
+brute_iter=0;
+tic
 while dif > tol
     for i = 1:M
         ki = k_grid(i);
@@ -37,7 +39,10 @@ while dif > tol
     end
     dif = max(abs(v1-v0));
     v0 = v1;
+    brute_iter=brute_iter+1;
 end
+toc
+brute_iter
 
 %Analytical results
 v_true = alpha/(1-alpha*beta)*log(k_grid) + 1/(1-beta)*log(1-alpha*beta)+1/(1-beta)*beta*alpha/(1-alpha*beta)*log(alpha*beta);
@@ -141,43 +146,6 @@ while dif > tol
 end
 toc
 conc_iter
-
-%% Howard's policy function iteration
-v0 = ones(M,1);
-v1 = zeros(M,1);
-k11 = zeros(M,1);
-w = zeros(M,1);
-dif = 1;
-iter_pol = 10;
-v11 = zeros(M,iter_pol);
-howard_iter = 0;
-
-
-
-tic
-while dif > tol
-    for i = 1:M
-        ki = k_grid(i);
-        for a = 1:M
-            c = ki^alpha + (1-delta)*ki - k_grid(a);
-            if c <= 0
-                w(a) = -Inf;
-            else
-                w(a) = log(c) + beta*v0(a);
-                u(a) = log(c);
-            end
-        end
-        [q, j] = max(w);
-        v1(i) = w(j);
-        k11(i) = j;
-    end
-    dif = max(abs(v1-v0));
-    v0 = v1;
-    howard_iter = howard_iter + 1;
-end
-toc
-howard_iter
-
 
 
 %% Howard's policy function (and using Umat and Vmat...)
