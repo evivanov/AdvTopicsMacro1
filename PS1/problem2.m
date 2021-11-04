@@ -3,7 +3,7 @@ clear all
 % Parameters
 alpha = 0.3;
 beta = 0.96;
-delta = 1;
+delta = 0.01;
 M = 100;
 
 tol = 1e-7;
@@ -19,7 +19,7 @@ z1 = 2*z0;
 k_star = ( 1/(alpha*z0) * ( 1/beta - 1 + delta ) )^(1/(alpha-1));
 k_star_new = ( 1/(alpha*z1) * ( 1/beta - 1 + delta ) )^(1/(alpha-1));
 
-T = 20;
+T = 200;
 
 k = zeros(T,1);
 k(1) = k_star;
@@ -34,8 +34,8 @@ c(1) = z1*k(1)^alpha + (1-delta) * k(1) - k(2);
 ki = k(2);
 ki1 = 0;
 
-% while abs(ki1 - ki) > 1e-45
-while abs(lower_bound_guess_k2 - upper_bound_guess_k2) > 1e-6
+while abs(ki1 - ki) > 1e-45
+%while abs(lower_bound_guess_k2 - upper_bound_guess_k2) > 1e-10
 %while abs(k(T) - k_star_new) > 1e-6
     ki = k(2);
     k(3:T) = zeros(T-3+1,1);
@@ -64,4 +64,4 @@ while abs(lower_bound_guess_k2 - upper_bound_guess_k2) > 1e-6
 end
 
 
-plot(1:T, k)
+plot(1:T, k(1:T))
