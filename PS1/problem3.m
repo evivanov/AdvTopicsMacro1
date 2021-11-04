@@ -11,3 +11,5 @@ figure('Name', 'Value Function wo')
 plot(intgrid, interexpon);
 hold on;
 plot(intgrid, exp(intgrid));
+legend('interpolated','function','Location','southeast');
+saveas(gcf,'ps3','epsc')
