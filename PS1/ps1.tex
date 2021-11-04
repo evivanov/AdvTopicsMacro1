@@ -116,23 +116,23 @@ Solving the model via value function iteration gives us the results displayed in
     \begin{tabular}{c|c|c}
          Method & Time (sec) & Number of iterations \\
          \hline
-         Brute-force & 0.177915 & 395 \\
-         Monotonicity & 0.179421 & 395 \\
-         Concavity & 0.206627 & 395 \\
-         Howard's pol. & 0.013470 & 18
+         Brute-force & 0.204910 & 395 \\
+         Monotonicity & 0.186577 & 395 \\
+         Concavity & 0.178771 & 395 \\
+         Howard's pol. & 0.016517 & 18
     \end{tabular}
     \caption{Performance for the different methods. Parameters: $\delta=1$, $\beta=0.96$, and $\alpha=0.3$.}
     \label{tab:res}
 \end{table}
 
 \subsection*{(b) Exploit monotonicity of the policy function and evaluate its performance.}
-In table \ref{tab:res} we have displayed the four different methods to compute the value function. We observe that exploiting monotonicity
+In table \ref{tab:res} we have displayed the four different methods to compute the value function. We observe that exploiting monotonicity is faster than the brute-force method, but slower than exploiting concavity and Howard's method. The number of iterations is the same for all methods except the Howard's policy iteration method.
 
 \subsection*{(c) Exploit concavity of the value function and evaluate its performance.}
-Looking at table \ref{tab:res}, we observe
+Looking at table \ref{tab:res}, we see that concavity is the second fastest method. It ranks behind Howard's method and before the rest.
 
 \subsection*{(d) Code Howard's policy iteration and evaluate its performance.}
-Looking at table \ref{tab:res} again, we know observe a large increase in performance, compared to the other methods.
+Looking at table \ref{tab:res} again, we now observe a large increase in performance, compared to the other methods. Also, the number of iterations decreases significantly. As a side note, we used 30 iterations for updating the value function with Howard's method.
 
 
 
@@ -182,26 +182,19 @@ k^* = \left[ \frac{1}{\alpha z} \left( \frac{1}{\beta} - 1 + \delta \right) \rig
 \]
 
 \section*{Problem 3}
+In figure \ref{fig:lin_int} one can see the results of the linear interpolation routine. It is not a very interesting graph, because the lines perfectly overlap. Details can be found in our code.
+
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{PS1/ps3.eps}
+    \caption{Result of linear interpolation routine.}
+    \label{fig:lin_int}
+\end{figure}
+
 
 \section*{Problem 4}
 
-The rate of convergence of the Bisection method is linear and slow but it is guaranteed to converge if function is real and continuous in an interval bounded by given two initial guess.
-Accuracy of bisection method is very good and this method is more reliable than other open methods like Secant, Newton Raphson method etc.
-
-Despite being slower to converge, accuracy of this method increases as number of iterations increases.
-
-In Bisection method, error is reduced by factor of ½ after each iterations, so we can write: en+1/en = 1/2. Which gives:
-
-en+1 = en/2
-
-Or, en+1 = 0.5 en ----- (1)
-
-Here en+1 is error at n+1th iteration and en is error at nth iteration.
-
-From equation (1) it can be concluded that, error at n+1th iteration is linearly related to error at nth iteration i.e. en+1 ∝ en
-
-For this reason, Bisection method is said to have linear rate of convergence.
-
+In the bisection method, the error ($e$) is halved after every iteration ($n$): $\frac{e_{n+1}}{e_n} = \frac{1}{2}$. Thus, $e_{n+1} = \frac{e_n}{2}$. Hence, by definition the bisection method converges linearly at rate $\frac{1}{2}$.
 
 
 \end{document}
