@@ -6,7 +6,7 @@ beta = 0.96;
 delta = 1;
 M = 100;
 
-tol = 1e-3;
+tol = 1e-7;
 dif = 1;
 
 kmin_grid = 0.001;
@@ -48,11 +48,11 @@ figure('Name', 'Value Function wo')
 plot(k_grid, v1);
 hold on;
 plot(k_grid, v_true, 'g');
-title('Value Function without Interpolation');
-% legend('without interpolation','true value function', 'Location','southeast');
+title('Value Function');
+legend('computed value function','true value function', 'Location','southeast');
 xlabel('current capital');
 ylabel('value function');
-% saveas(gcf,'1_Value_function_without','epsc')
+saveas(gcf,'1_Value_function_without','epsc')
 
 
 g = k_grid(k11);
@@ -60,11 +60,11 @@ figure('Name','Policy function w/o')
 plot(k_grid, g);
 hold on;
 plot(k_grid, g_true, 'g');
-title('Policy function without Interpolation');
-% legend('without interpolation','true policy function','Location','southeast');
+title('Policy function');
+legend('computed policy function','true policy function','Location','southeast');
 xlabel('current capital');
 ylabel('next period');
-% saveas(gcf,'1_Policy_Function_without','epsc')
+saveas(gcf,'1_Policy_Function_without','epsc')
 
 
 %% Value function iteration: exploiting monotonicity
