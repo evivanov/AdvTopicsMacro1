@@ -6,7 +6,7 @@ beta = 0.96;
 delta = 1;
 M = 100;
 
-tol = 1e-7;
+tol = 1e-3;
 dif = 1;
 
 kmin_grid = 0.001;
@@ -149,7 +149,10 @@ k11 = zeros(M,1);
 w = zeros(M,1);
 dif = 1;
 iter_pol = 10;
+v11 = zeros(M,iter_pol);
 howard_iter = 0;
+
+
 
 tic
 while dif > tol
@@ -161,14 +164,12 @@ while dif > tol
                 w(a) = -Inf;
             else
                 w(a) = log(c) + beta*v0(a);
+                u(a) = log(c);
             end
         end
         [q, j] = max(w);
         v1(i) = w(j);
         k11(i) = j;
-    end
-    for i = 1:iter_pol-1
-        v1(i+1) = w(k11(i)) + beta*v1(i);
     end
     dif = max(abs(v1-v0));
     v0 = v1;
@@ -179,6 +180,48 @@ howard_iter
 
 
 
+%% Howard's policy function (and using Umat and Vmat...)
+tic
+Umat = zeros(M,M); % rows are K and cols are K'
+V0 = zeros(M,1);
+how_iter = 30;
+V_iter = zeros(M,how_iter);
+dif = 1;
+
+% Create Umat:
+for i=1:M
+    for j=1:M
+        c = k_grid(i)^alpha + (1-delta)*k_grid(i) - k_grid(j); %i=K, j=K'
+        if (c >0)
+            Umat(i,j) = log(c);
+        else
+            Umat(i,j) = -Inf;
+        end
+    end
+end
+
+iterations = 0;
+% Perform operation:
+while dif > tol
+    Vmat = repmat(V0',M,1); %transpose is very important for some reason...
+    W = Umat + beta*Vmat;
+    [V,pol] = max(W,[],2);
+    
+    % Policy iteration:
+    V_iter(:,1) = V;
+    for i=2:how_iter % number of iters to do for howard's policy iteration
+        for j = 1:M % iter over all rows
+            V_iter(j, i) = Umat(j,pol(j)) + beta*V_iter(pol(j),i-1);
+        end
+    end
+    V = V_iter(:,how_iter);
+
+    dif = max(abs(V-V0));
+    V0 = V;
+    iterations = iterations + 1;
+end
+iterations
+toc
 
 
 
