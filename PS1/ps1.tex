@@ -95,6 +95,48 @@
 
 \section*{Problem 1}
 
+\subsection*{(a) Solve the model by value function iteration.}
+Solving the model via value function iteration gives us the results displayed in figures \ref{fig:pol} and \ref{fig:val}.
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{PS1/1_Policy_Function_without.eps}
+    \caption{Policy function using the brute-force method. Parameters: $\delta=1$, $\beta=0.96$, and $\alpha=0.3$.}
+    \label{fig:pol}
+\end{figure}
+
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{PS1/1_Value_function_without.eps}
+    \caption{Value function using the brute-force method. Parameters: $\delta=1$, $\beta=0.96$, and $\alpha=0.3$.}
+    \label{fig:val}
+\end{figure}
+
+\begin{table}[htbp!]
+    \centering
+    \begin{tabular}{c|c|c}
+         Method & Time (sec) & Number of iterations \\
+         \hline
+         Brute-force & 0.177915 & 395 \\
+         Monotonicity & 0.179421 & 395 \\
+         Concavity & 0.206627 & 395 \\
+         Howard's pol. & 0.013470 & 18
+    \end{tabular}
+    \caption{Performance for the different methods. Parameters: $\delta=1$, $\beta=0.96$, and $\alpha=0.3$.}
+    \label{tab:res}
+\end{table}
+
+\subsection*{(b) Exploit monotonicity of the policy function and evaluate its performance.}
+In table \ref{tab:res} we have displayed the four different methods to compute the value function. We observe that exploiting monotonicity
+
+\subsection*{(c) Exploit concavity of the value function and evaluate its performance.}
+Looking at table \ref{tab:res}, we observe
+
+\subsection*{(d) Code Howard's policy iteration and evaluate its performance.}
+Looking at table \ref{tab:res} again, we know observe a large increase in performance, compared to the other methods.
+
+
+
+
 \section*{Problem 2}
 
 Firstly let us derive the expression for the steady state level of capital.
