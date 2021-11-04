@@ -4,6 +4,9 @@ clear all
 alpha = 0.3;
 beta = 0.96;
 delta = 1;
+alpha = 0.5;
+beta = 0.8;
+delta = 1;
 M = 100;
 
 tol = 1e-7;
