@@ -62,7 +62,7 @@ end
 plot(1:T, k(1:T))
 
 
-
+%%
 
 k = zeros(T,1);
 k(T) = k_star_new;
@@ -71,7 +71,7 @@ c = zeros(T,1);
 lower_bound_guess_k_t_1 = 0;
 upper_bound_guess_k_t_1 = k(T);
 %z1*k(1)^alpha + (1-delta) * k(1);
-k(T-1) = (lower_bound_guess_k2+upper_bound_guess_k2)/2;
+k(T-1) = (lower_bound_guess_k_t_1+upper_bound_guess_k_t_1)/2;
 
 c(T) = z1*k(T)^alpha + (1-delta) * k(T) - k(T);
 
@@ -84,26 +84,26 @@ while abs(ki1 - ki) > 1e-45
     c(T) = z1*k(T)^alpha + (1-delta) * k(T) - k(T);
     c(T-1) = (1/beta)*c(T)/( z1*alpha*k(T)^(alpha-1) + 1 - delta);
     for t = T-2:-1:1
-       func = @(x) k(t) - z1*x^alpha - (1-delta)*x + c(t-1);
-       k(t) = z1*k(t-1)^alpha + (1-delta)*k(t-1) - c(t-1);
+       c(t) = (1/beta)*c(t+1)*(z1*alpha*k(t+1)^(alpha-1) + 1 - delta);
+       func = @(x) (k(t+1) - z1*x^alpha - (1-delta)*x + c(t);
+       k(t) = fminbnd(func, lower_bound_guess_k_t_1, upper_bound_guess_k_t_1);
        if k(t) < 0
-           lower_bound_guess_k2 = ki;
+           lower_bound_guess_k_t_1 = ki;
            break;
        end
        if k(t) > k_star_new
-           upper_bound_guess_k2 = ki;
+           upper_bound_guess_k_t_1 = ki;
            break;
        end
-       c(t) = (1/beta)*c(t+1)*(z1*alpha*k(t+1)^(alpha-1) + 1 - delta);
     end
-    if (k(T) < k_star_new && k(T) > 0)
-           lower_bound_guess_k2 = ki;
+    if (k(1) < k_star && k(1) > 0)
+           lower_bound_guess_k_t_1 = ki;
     end
-    if (k(T) > k_star_new)
-           upper_bound_guess_k2 = ki;
+    if (k(1) > k_star_new)
+           upper_bound_guess_k_t_1 = ki;
     end
-    ki1 = (lower_bound_guess_k2+upper_bound_guess_k2)/2;
-    k(2) = ki1;
+    ki1 = (lower_bound_guess_k_t_1+upper_bound_guess_k_t_1)/2;
+    k(T-1) = ki1;
 end
 
 
