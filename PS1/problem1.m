@@ -73,7 +73,9 @@ v1 = zeros(M,1);
 k11 = zeros(M,1);
 w = zeros(M,1);
 dif = 1;
+monoton_iter = 0;
 
+tic
 while dif > tol
     for i = 1:M
         ki = k_grid(i);
@@ -97,14 +99,10 @@ while dif > tol
     end
     dif = max(abs(v1-v0));
     v0 = v1;
+    monoton_iter = monoton_iter + 1;
 end
-
-
-
-
-
-
-
+toc
+monoton_iter
 
 %% Value function iteration: exploiting concavity
 v0 = ones(M,1);
@@ -112,7 +110,9 @@ v1 = zeros(M,1);
 k11 = zeros(M,1);
 w = zeros(M,1);
 dif = 1;
+conc_iter = 0;
 
+tic
 while dif > tol
     for i = 1:M
         ki = k_grid(i);
@@ -137,30 +137,45 @@ while dif > tol
     end
     dif = max(abs(v1-v0));
     v0 = v1;
+    conc_iter = conc_iter + 1;
 end
-
-
+toc
+conc_iter
 
 %% Howard's policy function iteration
-% TEST: k_0 cant be zero!
-%k_pr_0 = alpha.*k_grid; % some random guess
-%fun = @(k_pr) euler_equation(k_pr, k, alpha, beta, delta);
-%k_pr = fzero(fun,.1);
+v0 = ones(M,1);
+v1 = zeros(M,1);
+k11 = zeros(M,1);
+w = zeros(M,1);
 dif = 1;
-k_pr_grid = ones(M,M);
-k_0 = alpha.*k_grid;
+iter_pol = 10;
+howard_iter = 0;
 
+tic
 while dif > tol
     for i = 1:M
-        for j = 1:M-1
-            k = k_grid(i);
-            fun = @(k_pr) euler_equation(k_pr, k, alpha, beta, delta);
-            k_pr_grid(i,j+1) = fzero(fun,k_0(i));
+        ki = k_grid(i);
+        for a = 1:M
+            c = ki^alpha + (1-delta)*ki - k_grid(a);
+            if c <= 0
+                w(a) = -Inf;
+            else
+                w(a) = log(c) + beta*v0(a);
+            end
         end
-        dif = norm(k_pr_grid(:,j+1) - k_pr_grid(:,j));
+        [q, j] = max(w);
+        v1(i) = w(j);
+        k11(i) = j;
     end
+    for i = 1:iter_pol-1
+        v1(i+1) = w(k11(i)) + beta*v1(i);
+    end
+    dif = max(abs(v1-v0));
+    v0 = v1;
+    howard_iter = howard_iter + 1;
 end
-
+toc
+howard_iter
 
 
 
