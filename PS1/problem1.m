@@ -48,11 +48,11 @@ figure('Name', 'Value Function wo')
 plot(k_grid, v1);
 hold on;
 plot(k_grid, v_true, 'g');
-title('Value Function without Interpolation');
-% legend('without interpolation','true value function', 'Location','southeast');
+title('Value Function');
+legend('computed value function','true value function', 'Location','southeast');
 xlabel('current capital');
 ylabel('value function');
-% saveas(gcf,'1_Value_function_without','epsc')
+saveas(gcf,'1_Value_function_without','epsc')
 
 
 g = k_grid(k11);
@@ -60,11 +60,11 @@ figure('Name','Policy function w/o')
 plot(k_grid, g);
 hold on;
 plot(k_grid, g_true, 'g');
-title('Policy function without Interpolation');
-% legend('without interpolation','true policy function','Location','southeast');
+title('Policy function');
+legend('computed policy function','true policy function','Location','southeast');
 xlabel('current capital');
 ylabel('next period');
-% saveas(gcf,'1_Policy_Function_without','epsc')
+saveas(gcf,'1_Policy_Function_without','epsc')
 
 
 %% Value function iteration: exploiting monotonicity
@@ -73,7 +73,9 @@ v1 = zeros(M,1);
 k11 = zeros(M,1);
 w = zeros(M,1);
 dif = 1;
+monoton_iter = 0;
 
+tic
 while dif > tol
     for i = 1:M
         ki = k_grid(i);
@@ -97,14 +99,10 @@ while dif > tol
     end
     dif = max(abs(v1-v0));
     v0 = v1;
+    monoton_iter = monoton_iter + 1;
 end
-
-
-
-
-
-
-
+toc
+monoton_iter
 
 %% Value function iteration: exploiting concavity
 v0 = ones(M,1);
@@ -112,7 +110,9 @@ v1 = zeros(M,1);
 k11 = zeros(M,1);
 w = zeros(M,1);
 dif = 1;
+conc_iter = 0;
 
+tic
 while dif > tol
     for i = 1:M
         ki = k_grid(i);
@@ -137,33 +137,91 @@ while dif > tol
     end
     dif = max(abs(v1-v0));
     v0 = v1;
+    conc_iter = conc_iter + 1;
 end
-
-
+toc
+conc_iter
 
 %% Howard's policy function iteration
-% TEST: k_0 cant be zero!
-%k_pr_0 = alpha.*k_grid; % some random guess
-%fun = @(k_pr) euler_equation(k_pr, k, alpha, beta, delta);
-%k_pr = fzero(fun,.1);
+v0 = ones(M,1);
+v1 = zeros(M,1);
+k11 = zeros(M,1);
+w = zeros(M,1);
 dif = 1;
-k_pr_grid = ones(M,M);
-k_0 = alpha.*k_grid;
+iter_pol = 10;
+v11 = zeros(M,iter_pol);
+howard_iter = 0;
 
+
+
+tic
 while dif > tol
     for i = 1:M
-        for j = 1:M-1
-            k = k_grid(i);
-            fun = @(k_pr) euler_equation(k_pr, k, alpha, beta, delta);
-            k_pr_grid(i,j+1) = fzero(fun,k_0(i));
+        ki = k_grid(i);
+        for a = 1:M
+            c = ki^alpha + (1-delta)*ki - k_grid(a);
+            if c <= 0
+                w(a) = -Inf;
+            else
+                w(a) = log(c) + beta*v0(a);
+                u(a) = log(c);
+            end
         end
-        dif = norm(k_pr_grid(:,j+1) - k_pr_grid(:,j));
+        [q, j] = max(w);
+        v1(i) = w(j);
+        k11(i) = j;
+    end
+    dif = max(abs(v1-v0));
+    v0 = v1;
+    howard_iter = howard_iter + 1;
+end
+toc
+howard_iter
+
+
+
+%% Howard's policy function (and using Umat and Vmat...)
+tic
+Umat = zeros(M,M); % rows are K and cols are K'
+V0 = zeros(M,1);
+how_iter = 30;
+V_iter = zeros(M,how_iter);
+dif = 1;
+
+% Create Umat:
+for i=1:M
+    for j=1:M
+        c = k_grid(i)^alpha + (1-delta)*k_grid(i) - k_grid(j); %i=K, j=K'
+        if (c >0)
+            Umat(i,j) = log(c);
+        else
+            Umat(i,j) = -Inf;
+        end
     end
 end
 
+iterations = 0;
+% Perform operation:
+while dif > tol
+    Vmat = repmat(V0',M,1); %transpose is very important for some reason...
+    W = Umat + beta*Vmat;
+    [V,pol] = max(W,[],2);
+    
+    % Policy iteration:
+    V_iter(:,1) = V;
+    for i=2:how_iter % number of iters to do for howard's policy iteration
+        for j = 1:M % iter over all rows
+            V_iter(j, i) = Umat(j,pol(j)) + beta*V_iter(pol(j),i-1);
+        end
+    end
+    V = V_iter(:,how_iter);
 
-
-
+    dif = max(abs(V-V0));
+    V0 = V;
+    iterations = iterations + 1;
+end
+iterations
+toc
 
 
 
