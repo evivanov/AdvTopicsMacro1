@@ -16,7 +16,14 @@ T = 200;
 %%
 
 k_sys = fsolve(@(x) F(x), k_star_new*ones(201,1));
-plot(1:T, k_sys(1:T))
+
+figure('Name', 'Capital path (system of equations)')
+plot(1:T-1, k_sys(1:T-1))
+title('Capital path (system of equations)');
+xlabel('time');
+ylabel('capital');
+saveas(gcf,'2_sys','epsc')
+
 
 %%
 k = zeros(T,1);
