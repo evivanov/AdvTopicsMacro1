@@ -97,6 +97,9 @@
 \section*{Problem 1}
 
 \subsection*{(a) Solve the model by value function iteration.}
+
+The idea of VFI is relatively simple after we proved the theoretical results. We use the mapping $T$ which should converge to a fixed point which is the required solution. Specifically for the algorithm we firstly create a grid for capital values (both current and future). Then we start with some guess for the value function and apply the $T$ mapping (search for $k'$ such that the sum of instantaneous utility and the discounted future value is the maximal). On the next step we use the new value function as a guess. Then we apply it till the value function stabilizes.
+
 Solving the model via value function iteration gives us the results displayed in figures \ref{fig:pol} and \ref{fig:val}.
 \begin{figure}[htbp!]
     \centering
@@ -127,12 +130,21 @@ Solving the model via value function iteration gives us the results displayed in
 \end{table}
 
 \subsection*{(b) Exploit monotonicity of the policy function and evaluate its performance.}
+
+As we know that the $k'(k)$ is increasing we can limit the search for future capital when we apply $T$ mapping. This should give us the same number of iterations for the value function but should make each step quicker.
+
 In table \ref{tab:res} we have displayed the four different methods to compute the value function. We observe that exploiting monotonicity is faster than the brute-force method, but slower than exploiting concavity and Howard's method. The number of iterations is the same for all methods except the Howard's policy iteration method.
 
 \subsection*{(c) Exploit concavity of the value function and evaluate its performance.}
+
+Concavity of the value function (specifically the $H(k',k)$ that comes from the mapping $T$ can also shorten the steps of the algorithm as we can stop the search for $k'$ earlier.
+
 Looking at table \ref{tab:res}, we see that concavity is the second fastest method. It ranks behind Howard's method and before the rest.
 
 \subsection*{(d) Code Howard's policy iteration and evaluate its performance.}
+
+Here we exploit that the policy function does not change on most iterations and therefore instead of finding it on each step we assume for the next $3$ steps that it is the same. Therefore we loose good theoretical properties but we drastically improve speed.
+
 Looking at table \ref{tab:res} again, we now observe a large increase in performance, compared to the other methods. Also, the number of iterations decreases significantly. As a side note, we used 30 iterations for updating the value function with Howard's method.
 
 
@@ -182,16 +194,22 @@ If we assume $f(k) = k^\alpha$ then $f'(k) = \alpha k^{\alpha-1}$ and then the s
 k^* = \left[ \frac{1}{\alpha z} \left( \frac{1}{\beta} - 1 + \delta \right) \right]^{\frac{1}{\alpha-1}}
 \]
 
+To get the solution we can use the second-order difference equation that is on slide 38. For the first solution we specify the $T=200$ equations for each $t$ with the terminal conditions for $t=0$ (where we are in the old steady state) and for $t=T$ (where we get to the new one). After that we just solve this system given that the capital should be between the boundaries of the steady states.
+
+For shooting we use the following procedure. We have the initial condition $k_0 = k^*_{old}$. We need to guess the "angle" of our cannon (so $k_1$). To find it we use bisection. So first we use wide bounds and after each step we update them. In case the terminal value of capital is too low we need to increase $k_1$ and if it is too low then to make smaller. It should converge to the right guess of $k_1$ that achieves the desired trajectory.
+
+For shooting backwards the same logic should apply but for guessing $T-1$. The numerical complexity arises as there is no closed-form solution for the budget constraint to find the previous level of capital. This leads to unstable solution in our case.
+
 The following figures show the results that we got for solving system of equations and forward shooting (we could not make the backward shooting work stably):
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{PS1/2_sys.eps}
     \caption{Capital trajectory for solving system of equations. Parameters: $\delta=1$, $\beta=0.8$, and $\alpha=0.5$.}
     % \label{fig:val}
 \end{figure}
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{PS1/2_shoot.eps}
     \caption{Capital trajectory for forward shooting. Parameters: $\delta=0.01$, $\beta=0.97$, and $\alpha=0.3$.}
@@ -199,9 +217,9 @@ The following figures show the results that we got for solving system of equatio
 \end{figure}
 
 \section*{Problem 3}
-In figure \ref{fig:lin_int} one can see the results of the linear interpolation routine. It is not a very interesting graph, because the lines perfectly overlap. Details can be found in our code.
+In figure \ref{fig:lin_int} one can see the results of the linear interpolation routine. It is not a very interesting graph, because the lines perfectly overlap. Details can be found in our code. Essentially the routine finds the points on the grid closest to the desired ones and then uses the linear interpolation formula from the slides.
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{PS1/ps3.eps}
     \caption{Result of linear interpolation routine.}
