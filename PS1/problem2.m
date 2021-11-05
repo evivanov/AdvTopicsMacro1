@@ -67,8 +67,12 @@ while abs(ki1 - ki) > 1e-45
 end
 
 
-
+figure('Name', 'Capital path (shooting)')
 plot(1:T, k(1:T))
+title('Capital path (shooting)');
+xlabel('time');
+ylabel('capital');
+saveas(gcf,'2_shoot','epsc')
 
 
 %%
