@@ -1,0 +1,62 @@
+Starting preprocessing of the model file ...
+Found 3 equation(s).
+Evaluating expressions...done
+Computing static model derivatives (order 1).
+Computing dynamic model derivatives (order 2).
+Processing outputs ...
+done
+Preprocessing completed.
+DYNARE_SOLVE (solve_algo=2|4): number of blocks = 3
+DYNARE_SOLVE (solve_algo=2|4): solving block 2, of size 1
+DYNARE_SOLVE (solve_algo=2|4): solving block 1, of size 2
+MODEL_DIAGNOSTICS:  No obvious problems with this mod-file were detected.
+
+MODEL SUMMARY
+
+  Number of variables:         3
+  Number of stochastic shocks: 1
+  Number of state variables:   2
+  Number of jumpers:           2
+  Number of static variables:  0
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables         eps
+eps          1.000000
+
+POLICY AND TRANSITION FUNCTIONS
+                                   c               k               z
+Constant                    1.726274        0.837626        1.000000
+k(-1)                       0.680101        0.330000               0
+z(-1)                       1.639960        0.795745        0.950000
+eps                         0.017263        0.008376        0.010000
+k(-1),k(-1)                -0.271999       -0.131980               0
+z(-1),k(-1)                 0.646096        0.313500               0
+z(-1),z(-1)                 0.737982        0.358085       -0.023750
+eps,eps                     0.000173        0.000084        0.000050
+k(-1),eps                   0.006801        0.003300               0
+z(-1),eps                   0.032799        0.015915        0.009500
+
+
+APPROXIMATED THEORETICAL MOMENTS
+VARIABLE         MEAN  STD. DEV.   VARIANCE
+c              1.7295     0.0810     0.0066
+k              0.8392     0.0393     0.0015
+z              1.0005     0.0320     0.0010
+
+
+
+APPROXIMATED MATRIX OF CORRELATIONS
+Variables         c       k       z
+c            1.0000  1.0000  0.9941
+k            1.0000  1.0000  0.9941
+z            0.9941  0.9941  1.0000
+
+
+
+APPROXIMATED COEFFICIENTS OF AUTOCORRELATION
+Order          1       2       3       4       5
+c         0.9745  0.9339  0.8898  0.8462  0.8042
+k         0.9745  0.9339  0.8898  0.8462  0.8042
+z         0.9500  0.9025  0.8574  0.8145  0.7738
+Total computing time : 0h00m02s
