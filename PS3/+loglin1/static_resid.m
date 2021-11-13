@@ -18,16 +18,13 @@ function residual = static_resid(T, y, x, params, T_flag)
 if T_flag
     T = loglin1.static_resid_tt(T, y, x, params);
 end
-residual = zeros(3, 1);
+residual = zeros(2, 1);
 lhs = 0;
-rhs = y(3)+(params(1)-1)*y(2)-y(1)-y(1);
+rhs = params(5)*y(1)+y(1)*params(6)+y(1)*params(7)+params(8)*y(2)+y(2)*params(9);
 residual(1) = lhs - rhs;
-lhs = y(1);
-rhs = 1/(1-params(1)*params(2))*(y(3)+params(1)*y(2))-y(2)*params(1)*params(2)/(1-params(1)*params(2));
+lhs = y(2);
+rhs = y(2)*params(3)+params(4)*x(1);
 residual(2) = lhs - rhs;
-lhs = y(3);
-rhs = y(3)*params(3)+x(1);
-residual(3) = lhs - rhs;
 if ~isreal(residual)
   residual = real(residual)+imag(residual).^2;
 end

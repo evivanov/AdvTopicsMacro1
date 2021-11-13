@@ -29,8 +29,8 @@ residual(1) = lhs - rhs;
 lhs = y(3);
 rhs = T(2)-y(4);
 residual(2) = lhs - rhs;
-lhs = y(5);
-rhs = params(3)*y(2)+params(4)*x(it_, 1);
+lhs = log(y(5));
+rhs = params(3)*log(y(2))+params(4)*x(it_, 1);
 residual(3) = lhs - rhs;
 
 end

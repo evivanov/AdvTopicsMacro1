@@ -22,17 +22,14 @@ function g1 = dynamic_g1(T, y, x, params, steady_state, it_, T_flag)
 if T_flag
     T = loglin1.dynamic_g1_tt(T, y, x, params, steady_state, it_);
 end
-g1 = zeros(3, 8);
-g1(1,3)=1;
-g1(1,6)=1;
-g1(1,4)=(-(params(1)-1));
-g1(1,7)=(-1);
-g1(2,3)=1;
-g1(2,1)=(-(params(1)*1/(1-params(1)*params(2))));
-g1(2,4)=params(1)*params(2)/(1-params(1)*params(2));
-g1(2,5)=(-(1/(1-params(1)*params(2))));
-g1(3,2)=(-params(3));
-g1(3,5)=1;
-g1(3,8)=(-1);
+g1 = zeros(2, 7);
+g1(1,1)=(-params(7));
+g1(1,3)=(-params(6));
+g1(1,5)=(-params(5));
+g1(1,4)=(-params(9));
+g1(1,6)=(-params(8));
+g1(2,2)=(-params(3));
+g1(2,4)=1;
+g1(2,7)=(-params(4));
 
 end

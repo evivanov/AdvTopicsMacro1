@@ -6,6 +6,9 @@ Computing dynamic model derivatives (order 1).
 Processing outputs ...
 done
 Preprocessing completed.
+DYNARE_SOLVE (solve_algo=2|4): number of blocks = 3
+DYNARE_SOLVE (solve_algo=2|4): solving block 2, of size 1
+DYNARE_SOLVE (solve_algo=2|4): solving block 1, of size 2
 MODEL_DIAGNOSTICS:  No obvious problems with this mod-file were detected.
 
 MODEL SUMMARY
@@ -23,16 +26,16 @@ eps          1.000000
 
 POLICY AND TRANSITION FUNCTIONS
                                    c               k               z
-Constant                    0.388069        0.188300               0
-k(-1)                       0.680101        0.330000               0
-z(-1)                       0.368666        0.178885        0.950000
-eps                         0.003881        0.001883        0.010000
+Constant                    0.545965       -0.177184               0
+k(-1)                       0.330000        0.330000               0
+z(-1)                       0.950000        0.950000        0.950000
+eps                         0.010000        0.010000        0.010000
 
 
 THEORETICAL MOMENTS
 VARIABLE         MEAN  STD. DEV.   VARIANCE
-c              0.3881     0.0182     0.0003
-k              0.1883     0.0088     0.0001
+c              0.5460     0.0469     0.0022
+k             -0.1772     0.0469     0.0022
 z              0.0000     0.0320     0.0010
 
 

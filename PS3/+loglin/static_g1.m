@@ -25,7 +25,7 @@ g1(1,3)=(-(params(2)*T(1)/y(1)));
 g1(2,1)=1;
 g1(2,2)=(-(exp(y(3))*getPowerDeriv(y(2),params(1),1)-1));
 g1(2,3)=(-T(2));
-g1(3,3)=1-params(3);
+g1(3,3)=1/y(3)-params(3)*1/y(3);
 if ~isreal(g1)
     g1 = real(g1)+2*imag(g1);
 end

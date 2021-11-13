@@ -22,15 +22,12 @@ function residual = dynamic_resid(T, y, x, params, steady_state, it_, T_flag)
 if T_flag
     T = loglin1.dynamic_resid_tt(T, y, x, params, steady_state, it_);
 end
-residual = zeros(3, 1);
+residual = zeros(2, 1);
 lhs = 0;
-rhs = y(7)+(params(1)-1)*y(4)-y(6)-y(3);
+rhs = params(5)*y(5)+params(6)*y(3)+params(7)*y(1)+params(8)*y(6)+params(9)*y(4);
 residual(1) = lhs - rhs;
-lhs = y(3);
-rhs = 1/(1-params(1)*params(2))*(y(5)+params(1)*y(1))-y(4)*params(1)*params(2)/(1-params(1)*params(2));
+lhs = y(4);
+rhs = params(3)*y(2)+params(4)*x(it_, 1);
 residual(2) = lhs - rhs;
-lhs = y(5);
-rhs = params(3)*y(2)+x(it_, 1);
-residual(3) = lhs - rhs;
 
 end

@@ -18,14 +18,10 @@ function g1 = static_g1(T, y, x, params, T_flag)
 if T_flag
     T = loglin1.static_g1_tt(T, y, x, params);
 end
-g1 = zeros(3, 3);
-g1(1,1)=2;
-g1(1,2)=(-(params(1)-1));
-g1(1,3)=(-1);
-g1(2,1)=1;
-g1(2,2)=(-(params(1)*1/(1-params(1)*params(2))-params(1)*params(2)/(1-params(1)*params(2))));
-g1(2,3)=(-(1/(1-params(1)*params(2))));
-g1(3,3)=1-params(3);
+g1 = zeros(2, 2);
+g1(1,1)=(-(params(7)+params(5)+params(6)));
+g1(1,2)=(-(params(8)+params(9)));
+g1(2,2)=1-params(3);
 if ~isreal(g1)
     g1 = real(g1)+2*imag(g1);
 end

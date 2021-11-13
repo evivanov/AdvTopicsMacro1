@@ -108,7 +108,7 @@ M_.model_local_variables_dynamic_tt_idxs = {
 M_.equations_tags = {
   1 , 'name' , '1' ;
   2 , 'name' , 'c' ;
-  3 , 'name' , 'z' ;
+  3 , 'name' , '3' ;
 };
 M_.mapping.c.eqidx = [1 2 ];
 M_.mapping.k.eqidx = [1 2 ];
@@ -147,7 +147,7 @@ sigma = M_.params(4);
 options_.initval_file = false;
 oo_.steady_state(2) = (M_.params(1)*M_.params(2))^(1/(1-M_.params(1)));
 oo_.steady_state(1) = oo_.steady_state(2)^M_.params(1)-oo_.steady_state(2);
-oo_.steady_state(3) = 0;
+oo_.steady_state(3) = 1;
 if M_.exo_nbr > 0
 	oo_.exo_simul = ones(M_.maximum_lag,1)*oo_.exo_steady_state';
 end
@@ -160,6 +160,7 @@ end
 M_.exo_det_length = 0;
 M_.Sigma_e(1, 1) = 1;
 model_diagnostics(M_,options_,oo_);
+options_.loglinear = true;
 options_.order = 1;
 var_list_ = {};
 [info, oo_, options_, M_] = stoch_simul(M_, options_, oo_, var_list_);
