@@ -1,0 +1,53 @@
+Starting preprocessing of the model file ...
+Found 3 equation(s).
+Evaluating expressions...done
+Computing static model derivatives (order 1).
+Computing dynamic model derivatives (order 1).
+Processing outputs ...
+done
+Preprocessing completed.
+MODEL_DIAGNOSTICS:  No obvious problems with this mod-file were detected.
+
+MODEL SUMMARY
+
+  Number of variables:         3
+  Number of stochastic shocks: 1
+  Number of state variables:   2
+  Number of jumpers:           2
+  Number of static variables:  0
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables         eps
+eps          1.000000
+
+POLICY AND TRANSITION FUNCTIONS
+                                   c               k               z
+Constant                    0.388069        0.188300               0
+k(-1)                       0.680101        0.330000               0
+z(-1)                       0.368666        0.178885        0.950000
+eps                         0.003881        0.001883        0.010000
+
+
+THEORETICAL MOMENTS
+VARIABLE         MEAN  STD. DEV.   VARIANCE
+c              0.3881     0.0182     0.0003
+k              0.1883     0.0088     0.0001
+z              0.0000     0.0320     0.0010
+
+
+
+MATRIX OF CORRELATIONS
+Variables         c       k       z
+c            1.0000  1.0000  0.9941
+k            1.0000  1.0000  0.9941
+z            0.9941  0.9941  1.0000
+
+
+
+COEFFICIENTS OF AUTOCORRELATION
+Order          1       2       3       4       5
+c         0.9745  0.9339  0.8898  0.8462  0.8042
+k         0.9745  0.9339  0.8898  0.8462  0.8042
+z         0.9500  0.9025  0.8574  0.8145  0.7738
+Total computing time : 0h00m01s
